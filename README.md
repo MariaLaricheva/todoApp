@@ -1,12 +1,10 @@
 # Getting started
 
-The project is a simple to-do list app created with class components with a purpose of learning 
+The project is a simple to-do list app created with class components and MobX with a purpose of learning 
 how to deal with them. The tasks don't save themselves anywhere, so don't try using this app for storage purposes.
 
 
-## v1.0:
-### Bugs: 
-All the tasks that are added are doubled
+## v2.0
 
 ### Also 
 Styles are missing but whatever

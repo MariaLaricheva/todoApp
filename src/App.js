@@ -2,84 +2,39 @@ import './App.css';
 import React from 'react';
 import Task from "./components/Task"
 import TaskInput from "./components/TaskInput"
+import {observer} from "mobx-react";
+import store from "./store";
 
 class App extends React.Component{
-    constructor() {
-        super();
-        this.state = {
-            tasks: [
-                {id: 0, title: "Create to-do app with React", done: false},
-                {id: 1, title: "Add MobX to the project", done: true},
-                {id: 2, title: "Add MobX to the metaclass project", done: false}
-            ]
-        }
-    }
-
-    doneTask = (id) => {
-        const index = this.state.tasks.map(task => task.id).indexOf(id);
-        this.setState(state => {
-            let tasks = state.tasks;
-            tasks[index].done = true;
-            return tasks;
-        })
-    }
-
-    deleteTask = (id) => {
-        const index = this.state.tasks.map(task => task.id).indexOf(id);
-        this.setState(state => {
-            let tasks = state.tasks;
-            delete tasks[index];
-            // почему-то эта строчка не работает:
-            // tasks.filter(task => task.id !== index)
-            return tasks;
-        })
-    }
-
-    addTask = task => {
-        this.setState(state => {
-            let { tasks } = state;
-            let newTask = {
-                id: tasks.length!== 0 ? tasks.length : 0,
-                title: task,
-                done: false
-            };
-            tasks.push(newTask);
-            return tasks;
-        })
-    }
 
     render() {
 
-        const { tasks } = this.state;
-        const activeTasks = tasks.filter(task => !task.done);
-        const doneTasks = tasks.filter(task => task.done);
-
+        const { sortedTasks, activeTasks } = store;
 
         return(
             <div className="App">
 
                 <h1 className="top">
-                    Active tasks: {activeTasks.length}
+                    Active tasks: {activeTasks}
                 </h1>
 
-                {[...activeTasks, ...doneTasks].map(task => (
+                {sortedTasks.map(task => (
                     <Task
-                        task={task}
                         key={task.id}
+                        task={task}
                         //если передать функцию - она выполнится при рендере компонента
                         //а стрелочная функция сразу не выполнится
                         // поэтому используем стрелочные!!!
-                        doneTask={() => this.doneTask(task.id)}
-                        deleteTask={() => this.deleteTask(task.id)}
+                        doneTask={() => store.doneTask(task.id)}
+                        deleteTask={() => store.deleteTask(task.id)}
                     />
                 ))}
 
-                <TaskInput
-                addTask={this.addTask}
-                />
+                <TaskInput addTask={v => store.addTask(v)} />
             </div>
         )
     }
 }
 
-export default App;
+//обзервер нужен чтобы приложение ререндерилось
+export default observer(App);

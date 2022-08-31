@@ -1,7 +1,7 @@
 import React from "react";
 
 export class TaskInput extends React.Component {
-    constructor(props) {
+    constructor() {
         super();
 
         this.state = {
@@ -22,7 +22,6 @@ export class TaskInput extends React.Component {
     }
 
     handleEnter = event => {
-        console.log("нажата клавиша!")
         if (event.key === "Enter"){
             this.addTask();
         }
